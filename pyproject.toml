@@ -1,0 +1,79 @@
+[build-system]
+requires = ["poetry-core>=1.9.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+files = "pyproject_patcher/**/*.py,tests/**/*.py"
+implicit_reexport = false
+no_implicit_optional = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_ignores = true
+
+[tool.poetry]
+name = "pyproject_patcher"
+version = "0.1.0"
+description = "Collection of convenience functions to patch `pyproject.toml` in place"
+readme = [
+    "README.md",
+    "USAGE.md",
+]
+authors = [
+    "Claudia Pellegrino <clau@tiqua.de>",
+]
+license = "Apache-2.0"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Software Development :: Build Tools",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+colorama = "*"
+distlib = "*"
+in-place = "*"
+tomlkit = "*"
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "*"
+mypy = ">=1.8"
+myst-parser = ">=2.0.0"
+pdoc = ">=14.0"
+poethepoet = ">=0.24"
+pylint = ">=3.0"
+pytest = "*"
+sphinx = ">=7.1.2,<7.2.0"
+types-colorama = "*"
+
+[tool.poe]
+verbosity = -1
+
+[tool.poe.tasks]
+tasks.cmd = "poe -v"
+tasks.help = "List available tasks"
+doc.cmd = "sphinx-build -aqEW -b man doc/sphinx build/man"
+doc.help = "Generate documentation"
+html.cmd = "pdoc pyproject_patcher !pyproject_patcher.settings"
+html.help = "Browse HTML documentation"
+linter.cmd = "pylint --enable-all-extensions pyproject_patcher"
+linter.help = "Check for style violations"
+tests.cmd = "pytest"
+tests.help = "Run test suite"
+typecheck.cmd = "mypy"
+typecheck.help = "Run static type checker"
+
+[tool.pyright]
+reportUnsupportedDunderAll = "none"
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+xfail_strict = true

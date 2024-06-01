@@ -1,0 +1,15 @@
+/build/
+/debian/.debhelper/generated/
+/debian/debhelper-build-stamp
+/debian/files
+/debian/pyproject-patcher/
+/debian/pyproject-patcher.*.debhelper
+/debian/pyproject-patcher.substvars
+/dist/
+/.pc/
+/.venv/
+*.egg-info
+*.log
+.pybuild
+.pytest_cache
+__pycache__
