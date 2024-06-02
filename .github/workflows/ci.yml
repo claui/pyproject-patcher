@@ -60,6 +60,3 @@ jobs:
 
       - name: Run unit tests
         run: poetry run poe tests
-
-      - name: Run man page generator
-        run: poetry run poe doc
