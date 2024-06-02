@@ -2,7 +2,9 @@
 
 from contextlib import suppress
 import importlib.metadata
+from typing import cast
 
+from tomlkit.container import Container
 from tomlkit.toml_file import TOMLFile
 
 from .settings import PYPROJECT_TOML
@@ -20,7 +22,9 @@ def version() -> str | None:
     """
     with suppress(FileNotFoundError):
         document = TOMLFile(PYPROJECT_TOML).read()
-        return document['tool']['poetry']['version']
+        tool_section = cast(Container, document['tool'])
+        poetry_section = cast(Container, tool_section['poetry'])
+        return str(poetry_section['version'])
 
     with suppress(FileNotFoundError):
         return importlib.metadata.version(

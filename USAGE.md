@@ -3,13 +3,10 @@
 # Example
 
 ```py
-from pyproject_patcher import PyprojectPatcher
-from in_place import InPlace
-import tomlkit
+from pyproject_patcher import patch_in_place
 
-with InPlace('pyproject_toml') as f:
-    model = PyprojectPatcher(tomlkit.load(f))
-    model.set_project_version('1.2.7')
-    model.remove_setuptools_git_versioning()
-    tomlkit.dump(model, f)
+with patch_in_place('pyproject.toml') as toml:
+    toml.set_project_version('1.2.3')
+    toml.remove_build_system_dependency('setuptools-git-versoning')
+    toml.remove_setuptools_git_versioning()
 ```
