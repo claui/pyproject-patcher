@@ -6,13 +6,13 @@
 
 # Re-export these symbols
 # (This promotes them from pyproject_patcher.patcher to pyproject_patcher)
-from pyproject_patcher.patcher import PyprojectPatcher as PyprojectPatcher
+from pyproject_patcher.patcher import patch_in_place as patch_in_place
 
 from pyproject_patcher.version import version
 
 __all__ = [
     # Tell pdoc to pick up all re-exported symbols
-    'PyprojectPatcher',
+    'patch_in_place',
 
     # Modules that every subpackage should see
     # (This also exposes them to pdoc)
