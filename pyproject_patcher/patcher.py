@@ -13,11 +13,11 @@ from contextlib import contextmanager
 import os
 from typing import Any
 
-import distlib.util  # type: ignore
 from in_place import InPlace
 import tomlkit
 
 from .logging import get_logger
+from .requirements import RequirementsSection
 
 logger = get_logger(__name__)
 
@@ -78,6 +78,15 @@ class PyprojectPatcher:
 
 
     @property
+    def build_system_requires(self) -> RequirementsSection:
+        """The `requires` subsection of the `build-system` section."""
+        section = _get_subsequence(self.build_system, 'requires')
+        if not isinstance(section, tomlkit.items.Array):
+            raise KeyError(f'Expected tomlkit.items.Array, found {type(section)}: {section}')
+        return RequirementsSection(section)
+
+
+    @property
     def project(self) -> tomlkit.items.Table:
         """The `project` section of `pyproject.toml`."""
         return self._get_section('project')
@@ -112,11 +121,14 @@ class PyprojectPatcher:
 
     def remove_build_system_dependency(self, module_name: str) -> None:
         """Removes a Python module dependency from `build-system.requires`."""
-        requires_section = _get_subsequence(self.build_system, 'requires')
-        if not isinstance(requires_section, MutableSequence):
-            raise KeyError(
-                f'Expected MutableSequence, found {type(requires_section)}: {requires_section}')
-        _remove_dependency(requires_section, module_name)
+        self.build_system_requires.remove_dependency(module_name)
+
+
+    def strip_build_system_dependency_constraint(self, module_name: str) -> None:
+        """Modifies an entry in `build-system.requires` to strip its
+        version constraint.
+        """
+        self.build_system_requires.strip_constraint(module_name)
 
 
     def remove_setuptools_git_versioning_section(self) -> None:
@@ -149,22 +161,6 @@ def _get_subsequence(
     if not isinstance(section, MutableSequence):
         raise KeyError(f'Expected MutableSequence, found {type(section)}: {section}')
     return section
-
-
-def _remove_dependency(section: MutableSequence[str], module_name: str) -> None:
-    """Removes a Python module dependency from the given section.
-
-    :param section:
-        The TOML section container from which to remove a dependency.
-        Example: `pyproject_patcher.build_system["requires"]`
-
-    :param module_name:
-        The name of a module that is declared in the `section`
-    """
-    for dependency_expression in section:
-        requirement = distlib.util.parse_requirement(dependency_expression)
-        if requirement.name == module_name:
-            section.remove(dependency_expression)
 
 
 @contextmanager
