@@ -10,18 +10,23 @@ from source tarballs, where Git tags or commits aren’t available.
 
 from collections.abc import Iterator, MutableMapping, MutableSequence
 from contextlib import contextmanager
+from dataclasses import dataclass
+import functools
 import os
 from typing import Any
+from typing_extensions import deprecated
 
 from in_place import InPlace
 import tomlkit
 
 from .logging import get_logger
 from .requirements import RequirementsSection
+from .tools import Tools
 
 logger = get_logger(__name__)
 
 
+@dataclass(frozen=True)
 class PyprojectPatcher:
     """This class accepts a `pyproject.toml` model, allows to inject
     a static version number as its `project.version`, disables all
@@ -61,42 +66,56 @@ class PyprojectPatcher:
 
     [1]: https://setuptools-git-versioning.readthedocs.io/en/stable/schemas/file/index.html
     """
+
     document: tomlkit.TOMLDocument
-
-    def __init__(self, document: tomlkit.TOMLDocument) -> None:
-        self.document = document
-
 
     def _get_section(self, section_name: str) -> tomlkit.items.Table:
         return _get_subsection(self.document, section_name)
 
-
     @property
     def build_system(self) -> tomlkit.items.Table:
-        """The `build-system` section of `pyproject.toml`."""
-        return self._get_section('build-system')
-
+        """Low-level access to the `build-system` section of
+        `pyproject.toml`."""
+        return self._get_section("build-system")
 
     @property
     def build_system_requires(self) -> RequirementsSection:
-        """The `requires` subsection of the `build-system` section."""
-        section = _get_subsequence(self.build_system, 'requires')
+        """High-level access to the `requires` subsection of the `build-system`
+        section."""
+        section = _get_subsequence(self.build_system, "requires")
         if not isinstance(section, tomlkit.items.Array):
-            raise KeyError(f'Expected tomlkit.items.Array, found {type(section)}: {section}')
+            raise KeyError(
+                f"Expected tomlkit.items.Array, found {type(section)}: {section}"
+            )
         return RequirementsSection(section)
 
+    @property
+    def dynamic(self) -> MutableSequence[str]:
+        """Low-level access to the `project.dynamic` subsection of
+        the `build-system` section."""
+        section = _get_subsequence(self.project, "dynamic")
+        if not isinstance(section, tomlkit.items.Array):
+            raise KeyError(
+                f"Expected tomlkit.items.Array, found {type(section)}: {section}"
+            )
+        return section
 
     @property
     def project(self) -> tomlkit.items.Table:
-        """The `project` section of `pyproject.toml`."""
-        return self._get_section('project')
-
+        """Low-level access to the `project` section of `pyproject.toml`."""
+        return self._get_section("project")
 
     @property
     def tool(self) -> tomlkit.items.Table:
-        """The `tool` section of `pyproject.toml`."""
-        return self._get_section('tool')
+        """Low-level access to the `tool` section of `pyproject.toml`."""
+        return self._get_section("tool")
 
+    @functools.cached_property
+    def tools(self) -> Tools:
+        """High-level convenience methods for manipulating tool
+        settings, e.g. settings for the `setuptools_git_versioning`
+        tool."""
+        return Tools(self)
 
     def set_project_version(self, version: str) -> None:
         """Sets `project.version` to the given value.
@@ -104,8 +123,7 @@ class PyprojectPatcher:
         :param version:
             The version to set.
         """
-        self.project['version'] = version
-
+        self.project["version"] = version
 
     def set_project_version_from_env(self, key: str) -> None:
         """Sets `project.version` from the given environment variable.
@@ -115,14 +133,12 @@ class PyprojectPatcher:
             `project.version` property is to be set.
         """
         if not (version := os.getenv(key)):
-            raise KeyError(f'`{key}` not set in environment. Did you `export {key}`?')
+            raise KeyError(f"`{key}` not set in environment. Did you `export {key}`?")
         self.set_project_version(version)
-
 
     def remove_build_system_dependency(self, module_name: str) -> None:
         """Removes a Python module dependency from `build-system.requires`."""
         self.build_system_requires.remove_dependency(module_name)
-
 
     def strip_build_system_dependency_constraint(self, module_name: str) -> None:
         """Modifies an entry in `build-system.requires` to strip its
@@ -130,7 +146,7 @@ class PyprojectPatcher:
         """
         self.build_system_requires.strip_constraint(module_name)
 
-
+    @deprecated("Use self.tools.setuptools_git_versioning.remove() instead")
     def remove_setuptools_git_versioning_section(self) -> None:
         """Removes the `tool` section for the `setuptools-git-versioning`
         Python model so it no longer attempts to set `project.version`
@@ -138,9 +154,7 @@ class PyprojectPatcher:
         Additionally removes its import declaration from `build-system`
         so that the module doesn’t even have to be installed.
         """
-        _get_subsequence(self.project, 'dynamic').remove('version')
-        self.tool.pop('setuptools-git-versioning')
-        self.remove_build_system_dependency('setuptools-git-versioning')
+        self.tools.setuptools_git_versioning.remove()
 
 
 def _get_subsection(
@@ -149,7 +163,7 @@ def _get_subsection(
 ) -> tomlkit.items.Table:
     section = parent.get(section_name)
     if not isinstance(section, tomlkit.items.Table):
-        raise KeyError(f'Expected TOMLKit table, found {type(section)}: {section}')
+        raise KeyError(f"Expected TOMLKit table, found {type(section)}: {section}")
     return section
 
 
@@ -159,7 +173,7 @@ def _get_subsequence(
 ) -> MutableSequence[str]:
     section = parent.get(section_name)
     if not isinstance(section, MutableSequence):
-        raise KeyError(f'Expected MutableSequence, found {type(section)}: {section}')
+        raise KeyError(f"Expected MutableSequence, found {type(section)}: {section}")
     return section
 
 
