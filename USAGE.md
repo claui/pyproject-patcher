@@ -36,5 +36,5 @@ with patch_in_place('pyproject.toml') as toml:
 ```py
 with patch_in_place('pyproject.toml') as toml:
     toml.set_project_version('1.2.3')
-    toml.remove_setuptools_git_versioning()
+    toml.tools.setuptools_git_versioning.remove()
 ```

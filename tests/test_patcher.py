@@ -100,17 +100,3 @@ def test_remove_build_system_dependency_constraint(
             "wheel",
             "setuptools-git-versioning",
         ]
-
-
-def test_remove_setuptools_git_versioning_section(
-    toml_with_git_versioning_lt_2: Path,
-) -> None:
-    # When
-    with patch_in_place(toml_with_git_versioning_lt_2) as toml:
-        toml.remove_setuptools_git_versioning_section()
-
-    # Then
-    with toml_with_git_versioning_lt_2.open() as file:
-        section = tomlkit.load(file).get("tool")
-        assert isinstance(section, Mapping)
-        assert "setuptools-git-versioning" not in section
