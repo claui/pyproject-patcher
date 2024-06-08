@@ -43,6 +43,7 @@ colorama = "*"
 distlib = "*"
 in-place = "*"
 tomlkit = "*"
+typing-extensions = "*"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "*"
