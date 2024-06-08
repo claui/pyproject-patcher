@@ -38,3 +38,10 @@ with patch_in_place('pyproject.toml') as toml:
     toml.set_project_version('1.2.3')
     toml.tools.setuptools_git_versioning.remove()
 ```
+
+## Configure a version template without a `.dirty` suffix
+
+```py
+with patch_in_place('pyproject.toml') as toml:
+    toml.tools.setuptools_git_versioning.template_ignore_dirty_git()
+```

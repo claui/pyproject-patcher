@@ -17,6 +17,9 @@ what that means, then `pyproject-patcher` is probably not for you.
 - Remove dependency to `setuptools-git-versioning` from
   `build-system.requires`
 
+- Configure `setuptools-git-versioning` to use a version template
+  without a `.dirty` suffix
+
 ## Installation
 
 ### Installing from PyPI
