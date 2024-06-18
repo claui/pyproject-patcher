@@ -1,7 +1,7 @@
 # pyproject-patcher
 
-This package is an attempt to make it a little easier to patch
-`pyproject.toml` in place.
+This Python package is an attempt to make it a little easier to
+patch `pyproject.toml` in place.
 
 It is mainly useful for maintainers of system packages.  
 If you’re not a maintainer of system packages, or if you don’t know

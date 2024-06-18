@@ -1,6 +1,19 @@
 <!-- markdownlint-configure-file { "MD041": { "level": 1 } } -->
 
+# Description
+
+This Python package is an attempt to make it a little easier to
+patch `pyproject.toml` in place.
+
+It is mainly useful for maintainers of system packages.  
+If you’re not a maintainer of system packages, or if you don’t know
+what that means, then `pyproject-patcher` is probably not for you.
+
 # Examples
+
+## Recommended import statement
+
+The following examples all assume the following import statement:
 
 ```py
 from pyproject_patcher import patch_in_place
