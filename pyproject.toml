@@ -21,7 +21,7 @@ warn_unused_ignores = true
 
 [tool.poetry]
 name = "pyproject_patcher"
-version = "0.2.2"
+version = "0.2.3"
 description = "Collection of convenience functions to patch `pyproject.toml` in place"
 readme = [
     "README.md",
