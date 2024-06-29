@@ -22,6 +22,21 @@ def test_set_project_version(toml_with_git_versioning_lt_2: Path) -> None:
         assert section.get("version") == "1.2.3"
 
 
+def test_set_project_version_with_interleaved_sections(
+    toml_with_interleaved_sections: Path
+) -> None:
+    # When
+    with patch_in_place(toml_with_interleaved_sections) as toml:
+        toml.set_project_version("1.2.3")
+
+    # Then
+    with toml_with_interleaved_sections.open() as file:
+        section = tomlkit.load(file).get("project")
+        assert isinstance(section, Mapping)
+        assert "version" in section
+        assert section.get("version") == "1.2.3"
+
+
 def test_set_project_version_from_env(
     toml_with_git_versioning_lt_2: Path,
     monkeypatch: pytest.MonkeyPatch,
