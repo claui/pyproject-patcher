@@ -69,11 +69,11 @@ class PyprojectPatcher:
 
     document: tomlkit.TOMLDocument
 
-    def _get_section(self, section_name: str) -> tomlkit.items.Table:
+    def _get_section(self, section_name: str) -> MutableMapping[str, str | tomlkit.items.Item]:
         return _get_subsection(self.document, section_name)
 
     @property
-    def build_system(self) -> tomlkit.items.Table:
+    def build_system(self) -> MutableMapping[str, str | tomlkit.items.Item]:
         """Low-level access to the `build-system` section of
         `pyproject.toml`."""
         return self._get_section("build-system")
@@ -101,12 +101,12 @@ class PyprojectPatcher:
         return section
 
     @property
-    def project(self) -> tomlkit.items.Table:
+    def project(self) -> MutableMapping[str, str | tomlkit.items.Item]:
         """Low-level access to the `project` section of `pyproject.toml`."""
         return self._get_section("project")
 
     @property
-    def tool(self) -> tomlkit.items.Table:
+    def tool(self) -> MutableMapping[str, str | tomlkit.items.Item]:
         """Low-level access to the `tool` section of `pyproject.toml`."""
         return self._get_section("tool")
 
@@ -158,17 +158,17 @@ class PyprojectPatcher:
 
 
 def _get_subsection(
-    parent: MutableMapping[str, tomlkit.items.Item],
+    parent: MutableMapping[str, str | tomlkit.items.Item],
     section_name: str,
-) -> tomlkit.items.Table:
+) -> MutableMapping[str, str | tomlkit.items.Item]:
     section = parent.get(section_name)
-    if not isinstance(section, tomlkit.items.Table):
-        raise KeyError(f"Expected TOMLKit table, found {type(section)}: {section}")
+    if not isinstance(section, MutableMapping):
+        raise KeyError(f"Expected MutableMapping, found {type(section)}: {section}")
     return section
 
 
 def _get_subsequence(
-    parent: MutableMapping[str, tomlkit.items.Item],
+    parent: MutableMapping[str, str | tomlkit.items.Item],
     section_name: str,
 ) -> MutableSequence[str]:
     section = parent.get(section_name)

@@ -1,9 +1,8 @@
 """Manage the `setuptools_git_versioning` tool in a `pyproject.toml`."""
 
+from collections.abc import MutableMapping
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
-
-import tomlkit
 
 # This guard avoids circular imports
 if TYPE_CHECKING:
@@ -11,12 +10,14 @@ if TYPE_CHECKING:
 
 TOOL_NAME = "setuptools-git-versioning"
 
+
 @dataclass(frozen=True)
 class SetuptoolsGitVersioning:
     """This class wraps a `pyproject.toml` model and provides
     methods to interact with the `tools.setuptools_git_versioning`
     part and other entries related to it.
     """
+
     patcher: "PyprojectPatcher"
 
     def remove(self) -> None:
@@ -40,6 +41,6 @@ class SetuptoolsGitVersioning:
         In that case, having a `.dirty` suffix would be misleading.
         """
         section = self.patcher.tool.get(TOOL_NAME)
-        if not isinstance(section, tomlkit.items.Table):
-            raise KeyError(f"Expected TOMLKit table, found {type(section)}: {section}")
+        if not isinstance(section, MutableMapping):
+            raise KeyError(f"Expected MutableMapping, found {type(section)}: {section}")
         section["dirty_template"] = "{tag}.post{ccount}+git.{sha}"
