@@ -28,14 +28,14 @@ and follow one of the installation methods.
 #### Installing pyenv on Linux
 
 To install `pyenv` on Linux or WSL2, first make sure Python 3 is
-installed. Then follow the *Basic GitHub Checkout* method described
+installed. Then follow the _Basic GitHub Checkout_ method described
 at [github.com/pyenv/pyenv](https://github.com/pyenv/pyenv#basic-github-checkout).
 
 #### Installing pyenv on macOS
 
 To install `pyenv` on macOS, run:
 
-```
+```shell
 brew install pyenv
 ```
 
@@ -43,7 +43,7 @@ brew install pyenv
 
 To verify your `pyenv` is working, run:
 
-```
+```shell
 pyenv --version
 ```
 
@@ -54,13 +54,13 @@ and available in your PATH.
 
 To check, run:
 
-```
+```shell
 python --version
 ```
 
 If that fails, try:
 
-```
+```shell
 python3 --version
 ```
 
@@ -76,7 +76,7 @@ described in Poetry’s documentation.
 
 To install Poetry on macOS, run:
 
-```
+```shell
 brew install poetry
 ```
 
@@ -91,7 +91,7 @@ described in Poetry’s documentation.
 
 To verify Poetry is working, run:
 
-```
+```shell
 poetry --version
 ```
 
@@ -115,27 +115,17 @@ To update your dependencies after a `git pull`, run `poetry update`.
 
 To see a list of available tasks, run: `poetry run poe tasks`
 
-## Running pyproject-patcher
-
-To execute pyproject-patcher, run:
-
-```
-poetry run poe cli
-```
-
-## Contributing to pyproject-patcher
-
 ### Running the tests
 
 To execute the tests, run:
 
-```
+```shell
 poetry run poe tests
 ```
 
 To execute a single test, run e. g.:
 
-```
+```shell
 poetry run poe tests -vv tests/test_patcher.py::test_hello
 ```
 
@@ -143,7 +133,7 @@ poetry run poe tests -vv tests/test_patcher.py::test_hello
 
 To execute the linter, run:
 
-```
+```shell
 poetry run poe linter
 ```
 
@@ -151,7 +141,7 @@ poetry run poe linter
 
 To execute the static type check, run:
 
-```
+```shell
 poetry run poe typecheck
 ```
 
@@ -160,7 +150,7 @@ poetry run poe typecheck
 If you have [act](https://github.com/nektos/act) installed and a
 Docker daemon active, run:
 
-```sh
+```shell
 act
 ```
 
@@ -168,13 +158,13 @@ act
 
 To generate project documentation, run:
 
-```sh
+```shell
 poetry run poe doc
 ```
 
 To open the generated documentation with `man`, run:
 
-```sh
+```shell
 poetry run poe man
 ```
 
@@ -184,7 +174,7 @@ poetry run poe man
 
 If you get errors after a Git pull, refresh your dependencies:
 
-```
+```shell
 poetry update
 ```
 
@@ -193,7 +183,7 @@ poetry update
 If you’ve run `poetry update` and you still get errors, rebuild
 the virtual environment:
 
-```
+```shell
 poetry install
 ```
 
@@ -201,6 +191,6 @@ poetry install
 
 To check pyproject-patcher’s dependencies for compatible updates, run:
 
-```
+```shell
 poetry update --dry-run
 ```

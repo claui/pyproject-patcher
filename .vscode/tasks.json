@@ -4,58 +4,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "pyproject-patcher: Show usage help",
-      "type": "shell",
-      "command": "poetry",
-      "args": [
-        "run",
-        "poe",
-        "cli"
-      ],
-      "problemMatcher": [],
-      "group": "build",
-      "presentation": {
-        "clear": true,
-        "showReuseMessage": false
-      }
-    },
-    {
-      "label": "pyproject-patcher: Run hello",
-      "type": "shell",
-      "command": "poetry",
-      "args": [
-        "run",
-        "poe",
-        "hello"
-      ],
-      "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "presentation": {
-        "clear": true,
-        "showReuseMessage": false
-      }
-    },
-    {
-      "label": "pyproject-patcher: Run hello 'Claudia Pellegrino'",
-      "type": "shell",
-      "command": "poetry",
-      "args": [
-        "run",
-        "poe",
-        "hello",
-        "Claudia Pellegrino"
-      ],
-      "problemMatcher": [],
-      "group": "build",
-      "presentation": {
-        "clear": true,
-        "showReuseMessage": false
-      }
-    },
-    {
       "label": "pyproject-patcher: Install/update local dependencies",
       "type": "shell",
       "command": "poetry",
