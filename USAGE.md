@@ -58,3 +58,11 @@ with patch_in_place('pyproject.toml') as toml:
 with patch_in_place('pyproject.toml') as toml:
     toml.tools.setuptools_git_versioning.template_ignore_dirty_git()
 ```
+
+# Environment
+
+pyproject-patcher supports the following environment variable:
+
+`PYPROJECT_PATCHER_DEBUG`
+: If set to a non-zero value, causes pyproject-patcher to enable debug-level
+: logging.

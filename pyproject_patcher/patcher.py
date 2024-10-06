@@ -69,23 +69,27 @@ class PyprojectPatcher:
 
     document: tomlkit.TOMLDocument
 
-    def _get_section(self, section_name: str) -> MutableMapping[str, str | tomlkit.items.Item]:
+    def _get_section(
+        self, section_name: str
+    ) -> MutableMapping[str, str | tomlkit.items.Item]:
         return _get_subsection(self.document, section_name)
 
     @property
-    def build_system(self) -> MutableMapping[str, str | tomlkit.items.Item]:
+    def build_system(
+        self,
+    ) -> MutableMapping[str, str | tomlkit.items.Item]:
         """Low-level access to the `build-system` section of
         `pyproject.toml`."""
-        return self._get_section("build-system")
+        return self._get_section('build-system')
 
     @property
     def build_system_requires(self) -> RequirementsSection:
         """High-level access to the `requires` subsection of the `build-system`
         section."""
-        section = _get_subsequence(self.build_system, "requires")
+        section = _get_subsequence(self.build_system, 'requires')
         if not isinstance(section, tomlkit.items.Array):
             raise KeyError(
-                f"Expected tomlkit.items.Array, found {type(section)}: {section}"
+                f'Expected tomlkit.items.Array, found {type(section)}: {section}'
             )
         return RequirementsSection(section)
 
@@ -93,22 +97,22 @@ class PyprojectPatcher:
     def dynamic(self) -> MutableSequence[str]:
         """Low-level access to the `project.dynamic` subsection of
         the `build-system` section."""
-        section = _get_subsequence(self.project, "dynamic")
+        section = _get_subsequence(self.project, 'dynamic')
         if not isinstance(section, tomlkit.items.Array):
             raise KeyError(
-                f"Expected tomlkit.items.Array, found {type(section)}: {section}"
+                f'Expected tomlkit.items.Array, found {type(section)}: {section}'
             )
         return section
 
     @property
     def project(self) -> MutableMapping[str, str | tomlkit.items.Item]:
         """Low-level access to the `project` section of `pyproject.toml`."""
-        return self._get_section("project")
+        return self._get_section('project')
 
     @property
     def tool(self) -> MutableMapping[str, str | tomlkit.items.Item]:
         """Low-level access to the `tool` section of `pyproject.toml`."""
-        return self._get_section("tool")
+        return self._get_section('tool')
 
     @functools.cached_property
     def tools(self) -> Tools:
@@ -123,7 +127,7 @@ class PyprojectPatcher:
         :param version:
             The version to set.
         """
-        self.project["version"] = version
+        self.project['version'] = version
 
     def set_project_version_from_env(self, key: str) -> None:
         """Sets `project.version` from the given environment variable.
@@ -133,20 +137,27 @@ class PyprojectPatcher:
             `project.version` property is to be set.
         """
         if not (version := os.getenv(key)):
-            raise KeyError(f"`{key}` not set in environment. Did you `export {key}`?")
+            raise KeyError(
+                f'`{key}` not set in environment. Did you `export {key}`?'
+            )
+        logger.debug('Using environment variable: %s', key)
         self.set_project_version(version)
 
     def remove_build_system_dependency(self, module_name: str) -> None:
         """Removes a Python module dependency from `build-system.requires`."""
         self.build_system_requires.remove_dependency(module_name)
 
-    def strip_build_system_dependency_constraint(self, module_name: str) -> None:
+    def strip_build_system_dependency_constraint(
+        self, module_name: str
+    ) -> None:
         """Modifies an entry in `build-system.requires` to strip its
         version constraint.
         """
         self.build_system_requires.strip_constraint(module_name)
 
-    @deprecated("Use self.tools.setuptools_git_versioning.remove() instead")
+    @deprecated(
+        'Use self.tools.setuptools_git_versioning.remove() instead'
+    )
     def remove_setuptools_git_versioning_section(self) -> None:
         """Removes the `tool` section for the `setuptools-git-versioning`
         Python model so it no longer attempts to set `project.version`
@@ -163,7 +174,9 @@ def _get_subsection(
 ) -> MutableMapping[str, str | tomlkit.items.Item]:
     section = parent.get(section_name)
     if not isinstance(section, MutableMapping):
-        raise KeyError(f"Expected MutableMapping, found {type(section)}: {section}")
+        raise KeyError(
+            f'Expected MutableMapping, found {type(section)}: {section}'
+        )
     return section
 
 
@@ -173,12 +186,16 @@ def _get_subsequence(
 ) -> MutableSequence[str]:
     section = parent.get(section_name)
     if not isinstance(section, MutableSequence):
-        raise KeyError(f"Expected MutableSequence, found {type(section)}: {section}")
+        raise KeyError(
+            f'Expected MutableSequence, found {type(section)}: {section}'
+        )
     return section
 
 
 @contextmanager
-def patch_in_place(path: str | os.PathLike[Any]) -> Iterator[PyprojectPatcher]:
+def patch_in_place(
+    path: str | os.PathLike[Any],
+) -> Iterator[PyprojectPatcher]:
     """Patches a given `pyproject.toml` file in place."""
     with InPlace(path) as f:
         patcher = PyprojectPatcher(tomlkit.load(f))

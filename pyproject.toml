@@ -23,13 +23,8 @@ warn_unused_ignores = true
 name = "pyproject_patcher"
 version = "0.2.3"
 description = "Collection of convenience functions to patch `pyproject.toml` in place"
-readme = [
-    "README.md",
-    "USAGE.md",
-]
-authors = [
-    "Claudia Pellegrino <clau@tiqua.de>",
-]
+readme = ["README.md", "USAGE.md"]
+authors = ["Claudia Pellegrino <clau@tiqua.de>"]
 license = "Apache-2.0"
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -84,3 +79,9 @@ reportUnsupportedDunderAll = "none"
 [tool.pytest.ini_options]
 testpaths = "tests"
 xfail_strict = true
+
+[tool.ruff]
+line-length = 72
+
+[tool.ruff.format]
+quote-style = "single"
