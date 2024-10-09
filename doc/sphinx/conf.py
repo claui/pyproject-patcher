@@ -7,6 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'pyproject-patcher'
+executable_name = 'pyproject-patcher'
 author = 'Claudia Pellegrino <clau@tiqua.de>'
 description = 'Collection of convenience functions to patch `pyproject.toml` in place'
 
@@ -30,7 +31,7 @@ exclude_patterns = []
 
 man_pages = [(
     'index',
-    project.lower(),
+    'pyproject-patcher',
     description,
     [author],
     3,

@@ -44,7 +44,8 @@ Direct your favorite
 
 ## Usage
 
-See [`USAGE.md`](https://github.com/claui/pyproject-patcher/blob/main/USAGE.md) for details.
+See [`USAGE.md`](https://github.com/claui/pyproject-patcher/blob/main/USAGE.md)
+for details.
 
 ## Contributing to pyproject-patcher
 
