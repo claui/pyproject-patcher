@@ -7,6 +7,7 @@ import distlib.util
 
 from .types import RequirementsContainer
 
+
 class RequirementsSection:
     """A list of requirements expressions.
 
@@ -22,9 +23,15 @@ class RequirementsSection:
     def __init__(self, array: tomlkit.items.Array) -> None:
         self.array = array
 
-    def _requirements(self) -> Iterable[tuple[RequirementsContainer, str]]:
+    def _requirements(
+        self,
+    ) -> Iterable[tuple[RequirementsContainer, str]]:
         for dependency_expression in self.array:
-            if (requirement := distlib.util.parse_requirement(dependency_expression)) is not None:
+            if (
+                requirement := distlib.util.parse_requirement(
+                    dependency_expression
+                )
+            ) is not None:
                 yield requirement, dependency_expression
 
     def remove_dependency(self, module_name: str) -> None:

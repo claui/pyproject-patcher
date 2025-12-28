@@ -2,5 +2,4 @@
 
 from pyproject_patcher.types import RequirementsContainer
 
-def parse_requirement(__req: str) -> RequirementsContainer | None:
-    ...
+def parse_requirement(__req: str) -> RequirementsContainer | None: ...
