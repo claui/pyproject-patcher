@@ -1,6 +1,67 @@
+[project]
+name = "pyproject_patcher"
+version = "0.2.3"
+description = "Collection of convenience functions to patch `pyproject.toml` in place"
+readme = "README.md"
+authors = [{ name = "Claudia Pellegrino", email = "clau@tiqua.de" }]
+license = "Apache-2.0"
+# See https://pypi.org/pypi?%3Aaction=list_classifiers
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Software Development :: Build Tools",
+]
+requires-python = ">=3.12"
+
+dependencies = [
+    "colorama",
+    "distlib",
+    "in-place",
+    "pyxdg",
+    "tomlkit",
+    "typing-extensions",
+]
+
 [build-system]
-requires = ["poetry-core>=1.9.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["autopep8", "mypy", "poethepoet", "pylint", "ruff", "types-colorama"]
+doc = [
+    "myst-parser",
+    "sphinx",
+    # https://github.com/readthedocs/sphinx-autoapi/issues/536
+    "sphinx-autoapi>=3.6.1",
+    "sphinx-rtd-theme",
+]
+test = ["pytest", "setuptools-git-versioning"]
+
+[project.urls]
+documentation = "https://pyproject-patcher.readthedocs.io/en/stable/"
+source = "https://github.com/claui/pyproject-patcher"
+
+[tool.bumpversion]
+current_version = "0.1.0"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+ignore_missing_version = false
+ignore_missing_files = false
+tag = false
+sign_tags = false
+tag_name = "v{new_version}"
+tag_message = "Bump version to {new_version}"
+allow_dirty = true
+commit = false
+message = "Bump version to {new_version}"
+moveable_tags = []
+commit_args = ""
+setup_hooks = []
+pre_commit_hooks = []
+post_commit_hooks = []
 
 [tool.mypy]
 check_untyped_defs = true
@@ -19,52 +80,24 @@ warn_redundant_casts = true
 warn_return_any = true
 warn_unused_ignores = true
 
-[tool.poetry]
-name = "pyproject_patcher"
-version = "0.2.3"
-description = "Collection of convenience functions to patch `pyproject.toml` in place"
-readme = ["README.md", "USAGE.md"]
-authors = ["Claudia Pellegrino <clau@tiqua.de>"]
-license = "Apache-2.0"
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Operating System :: POSIX :: Linux",
-    "Topic :: Software Development :: Build Tools",
-]
-
-[tool.poetry.dependencies]
-python = ">=3.12"
-colorama = "*"
-distlib = "*"
-in-place = "*"
-tomlkit = "*"
-typing-extensions = "*"
-
-[tool.poetry.group.dev.dependencies]
-autopep8 = "*"
-mypy = ">=1.8"
-myst-parser = ">=2.0.0"
-pdoc = ">=14.0"
-poethepoet = ">=0.24"
-pylint = ">=3.0"
-pytest = "*"
-sphinx = ">=7.1.2,<7.2.0"
-types-colorama = "*"
-
-[tool.poetry.group.test.dependencies]
-setuptools-git-versioning = "*"
-
 [tool.poe]
 verbosity = -1
 
 [tool.poe.tasks]
 tasks.cmd = "poe -v"
 tasks.help = "List available tasks"
-doc.cmd = "sphinx-build -aqEW -b man doc/sphinx build/man"
+doc.shell = """
+    set -ex
+    rm -rf build/html build/man
+    sphinx-build -aqEW -b html doc/sphinx build/html
+    sphinx-build -qW -b man doc/sphinx build/man
+"""
 doc.help = "Generate documentation"
-html.cmd = "pdoc pyproject_patcher !pyproject_patcher.settings"
+formatcheck.cmd = "ruff format --check"
+formatcheck.help = "Check for formatting style violations not covered by the linter"
+html.script = "webbrowser:open('build/html/index.html')"
 html.help = "Browse HTML documentation"
-linter.cmd = "pylint --enable-all-extensions pyproject_patcher"
+linter.cmd = "pylint --enable-all-extensions pyproject_patcher tests"
 linter.help = "Check for style violations"
 man.cmd = "man build/man/pyproject-patcher.3"
 man.help = "Open manual page"
@@ -85,3 +118,7 @@ line-length = 72
 
 [tool.ruff.format]
 quote-style = "single"
+
+[tool.uv]
+default-groups = ["dev", "doc", "test"]
+fork-strategy = "fewest"

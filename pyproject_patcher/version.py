@@ -28,6 +28,7 @@ def version() -> str | None:
 
     with suppress(FileNotFoundError):
         return importlib.metadata.version(
-            __package__ or __name__.split('.', maxsplit=1)[0])
+            __package__ or __name__.split('.', maxsplit=1)[0]
+        )
 
     return None
