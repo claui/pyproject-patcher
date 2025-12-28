@@ -13,21 +13,14 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 
-dependencies = [
-    "colorama",
-    "distlib",
-    "in-place",
-    "pyxdg",
-    "tomlkit",
-    "typing-extensions",
-]
+dependencies = ["distlib", "in-place", "pyxdg", "tomlkit", "typing-extensions"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["autopep8", "mypy", "poethepoet", "pylint", "ruff", "types-colorama"]
+dev = ["autopep8", "mypy", "poethepoet", "pylint", "ruff"]
 doc = [
     "myst-parser",
     "sphinx",
