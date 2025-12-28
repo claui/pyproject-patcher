@@ -6,6 +6,7 @@
 /debian/pyproject-patcher.*.debhelper
 /debian/pyproject-patcher.substvars
 /dist/
+/doc/sphinx/autoapi/
 /.pc/
 /.venv/
 *.egg-info

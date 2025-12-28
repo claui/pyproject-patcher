@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-22.04
     environment:
       name: pypi
-      url: https://pypi.org/p/pyproject_patcher
+      url: https://pypi.org/p/pyproject-patcher
     permissions:
       contents: write
       id-token: write

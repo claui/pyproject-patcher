@@ -53,8 +53,8 @@ See [`CONTRIBUTING.md`](https://github.com/claui/pyproject-patcher/blob/main/CON
 
 ## License
 
-Copyright (c) 2024 Claudia Pellegrino
+Copyright (c) 2024–2025 Claudia Pellegrino
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
-For a copy of the License, see [LICENSE](LICENSE).
+For a copy of the License, see [LICENSE](https://raw.githubusercontent.com/claui/pyproject-patcher/refs/heads/main/LICENSE).

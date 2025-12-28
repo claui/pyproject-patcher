@@ -1,7 +1,12 @@
 """
-.. include:: ../README.md
+Usage example:
 
-## API Documentation
+.. code:: python
+
+   from pyproject_patcher.patcher import Patcher
+
+   patcher = Patcher()
+   patcher.hello()
 """
 
 # Re-export these symbols
@@ -11,12 +16,7 @@ from pyproject_patcher.patcher import patch_in_place as patch_in_place
 from pyproject_patcher.version import version
 
 __all__ = [
-    # Tell pdoc to pick up all re-exported symbols
-    'patch_in_place',
-
     # Modules that every subpackage should see
-    # (This also exposes them to pdoc)
-    'patcher',
     'settings',
 ]
 
