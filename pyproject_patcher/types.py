@@ -5,8 +5,8 @@ from typing import NamedTuple, TypedDict
 
 class MarkerExpression(TypedDict):
     op: str
-    lhs: "MarkerExpression | str"
-    rhs: "MarkerExpression | str"
+    lhs: 'MarkerExpression | str'
+    rhs: 'MarkerExpression | str'
 
 
 class RequirementsContainer(NamedTuple):

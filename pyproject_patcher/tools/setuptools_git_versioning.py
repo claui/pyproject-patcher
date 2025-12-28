@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..patcher import PyprojectPatcher
 
-TOOL_NAME = "setuptools-git-versioning"
+TOOL_NAME = 'setuptools-git-versioning'
 
 
 @dataclass(frozen=True)
@@ -18,7 +18,7 @@ class SetuptoolsGitVersioning:
     part and other entries related to it.
     """
 
-    patcher: "PyprojectPatcher"
+    patcher: 'PyprojectPatcher'
 
     def remove(self) -> None:
         """Removes all references to `setuptools-git-versioning` from
@@ -27,7 +27,7 @@ class SetuptoolsGitVersioning:
         and the entry in the `build-system.requires` section that
         requires the `setuptools-git-versioning` module.
         """
-        self.patcher.dynamic.remove("version")
+        self.patcher.dynamic.remove('version')
         self.patcher.tool.pop(TOOL_NAME)
         self.patcher.remove_build_system_dependency(TOOL_NAME)
 
@@ -42,5 +42,7 @@ class SetuptoolsGitVersioning:
         """
         section = self.patcher.tool.get(TOOL_NAME)
         if not isinstance(section, MutableMapping):
-            raise KeyError(f"Expected MutableMapping, found {type(section)}: {section}")
-        section["dirty_template"] = "{tag}.post{ccount}+git.{sha}"
+            raise KeyError(
+                f'Expected MutableMapping, found {type(section)}: {section}'
+            )
+        section['dirty_template'] = '{tag}.post{ccount}+git.{sha}'

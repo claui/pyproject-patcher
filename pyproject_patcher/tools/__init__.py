@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class Tools:
     """Accessor for tools, such as `setuptools_git_versioning`."""
 
-    patcher: "PyprojectPatcher"
+    patcher: 'PyprojectPatcher'
 
     @functools.cached_property
     def setuptools_git_versioning(self) -> SetuptoolsGitVersioning:
