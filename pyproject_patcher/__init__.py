@@ -3,10 +3,10 @@ Usage example:
 
 .. code:: python
 
-   from pyproject_patcher.patcher import Patcher
+   from pyproject_patcher import patch_in_place
 
-   patcher = Patcher()
-   patcher.hello()
+   with patch_in_place('pyproject.toml') as toml:
+       toml.set_project_version('1.2.3')
 """
 
 # Re-export these symbols
