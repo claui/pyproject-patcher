@@ -22,9 +22,8 @@ def version() -> str | None:
     """
     with suppress(FileNotFoundError):
         document = TOMLFile(PYPROJECT_TOML).read()
-        tool_section = cast(Container, document['tool'])
-        poetry_section = cast(Container, tool_section['poetry'])
-        return str(poetry_section['version'])
+        project_section = cast(Container, document['project'])
+        return str(project_section['version'])
 
     with suppress(FileNotFoundError):
         return importlib.metadata.version(
