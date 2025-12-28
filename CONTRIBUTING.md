@@ -31,7 +31,7 @@ uv run poe tests
 To execute a single test, run e. g.:
 
 ```shell
-uv run poe tests -vv tests/test_patcher.py::test_hello
+uv run poe tests -vv tests/test_patcher.py::test_set_project_version
 ```
 
 ### Running the linter
