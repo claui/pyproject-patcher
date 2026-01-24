@@ -3,7 +3,13 @@
 from collections.abc import Mapping
 from pathlib import Path
 
-from setuptools_git_versioning import DEFAULT_DEV_TEMPLATE
+try:
+    # setuptools-git-versioning >= 3.0.0
+    from setuptools_git_versioning.defaults import DEFAULT_DEV_TEMPLATE
+except ImportError:
+    # setuptools-git-versioning < 3.0.0
+    from setuptools_git_versioning import DEFAULT_DEV_TEMPLATE
+
 import tomlkit
 
 from pyproject_patcher.patcher import patch_in_place
