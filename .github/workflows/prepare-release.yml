@@ -30,6 +30,7 @@ jobs:
 
       - name: Ensure package versions are synchronized
         run: |
+          set -eux
           delta="$(uvx bump-my-version show scm_info.distance_to_latest_tag)"
           if [ "${delta}" -gt 0 ]; then
             version_from_tag="$(
@@ -41,6 +42,7 @@ jobs:
         env:
           TARGET_VERSION: ${{ inputs.target_version }}
         run: |
+          set -eux
           is_keyword="$(
             uvx bump-my-version show --format=json parts \
               | jq -r --arg requested "${TARGET_VERSION}" \
