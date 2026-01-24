@@ -28,16 +28,6 @@ jobs:
       - name: Print current package version
         run: uv tree -d 0
 
-      - name: Ensure package versions are synchronized
-        run: |
-          set -eux
-          delta="$(uvx bump-my-version show scm_info.distance_to_latest_tag)"
-          if [ "${delta}" -gt 0 ]; then
-            version_from_tag="$(
-              uvx bump-my-version show scm_info.current_version)"
-            uvx bump-my-version bump --new-version="${version_from_tag}"
-          fi
-
       - name: Bump package version
         env:
           TARGET_VERSION: ${{ inputs.target_version }}
