@@ -28,10 +28,29 @@ jobs:
       - name: Print current package version
         run: uv tree -d 0
 
+      - name: Ensure package versions are synchronized
+        run: |
+          delta="$(uvx bump-my-version show scm_info.distance_to_latest_tag)"
+          if [ "${delta}" -gt 0 ]; then
+            version_from_tag="$(
+              uvx bump-my-version show scm_info.current_version)"
+            uvx bump-my-version bump --new-version="${version_from_tag}"
+          fi
+
       - name: Bump package version
         env:
           TARGET_VERSION: ${{ inputs.target_version }}
-        run: uvx bump-my-version bump "${TARGET_VERSION}"
+        run: |
+          is_keyword="$(
+            uvx bump-my-version show --format=json parts \
+              | jq -r --arg requested "${TARGET_VERSION}" \
+                '.parts | has($requested)'
+          )"
+          if [ "${is_keyword}" == 'true' ]; then
+            uvx bump-my-version bump "${TARGET_VERSION}"
+          else
+            uvx bump-my-version bump --new-version="${TARGET_VERSION}"
+          fi
 
       - id: gather_new_version
         name: Gather bumped package version
