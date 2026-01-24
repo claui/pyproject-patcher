@@ -32,7 +32,6 @@ jobs:
         env:
           TARGET_VERSION: ${{ inputs.target_version }}
         run: |
-          set -eux
           is_keyword="$(
             uvx bump-my-version show --format=json parts \
               | jq -r --arg requested "${TARGET_VERSION}" \
