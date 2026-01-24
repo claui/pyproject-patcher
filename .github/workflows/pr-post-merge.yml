@@ -39,13 +39,6 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
-      - name: Sign the distributions
-        uses: sigstore/gh-action-sigstore-python@v2.1.1
-        with:
-          inputs: >-
-            dist/*.tar.gz
-            dist/*.whl
-
       - name: Create draft release
         env:
           GITHUB_TOKEN: ${{ github.token }}

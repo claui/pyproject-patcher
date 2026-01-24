@@ -98,13 +98,6 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
 
-      - name: Sign the distributions
-        uses: sigstore/gh-action-sigstore-python@v2.1.1
-        with:
-          inputs: >-
-            dist/*.tar.gz
-            dist/*.whl
-
   create-pr:
     needs:
       - bump-version
