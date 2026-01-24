@@ -1,6 +1,6 @@
 [project]
 name = "pyproject_patcher"
-version = "0.2.3"
+version = "0.3.0"
 description = "Collection of convenience functions to patch `pyproject.toml` in place"
 readme = "README.md"
 authors = [{ name = "Claudia Pellegrino", email = "clau@tiqua.de" }]
