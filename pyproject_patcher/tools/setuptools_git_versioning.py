@@ -15,7 +15,7 @@ TOOL_NAME = 'setuptools-git-versioning'
 class SetuptoolsGitVersioning:
     """This class wraps a `pyproject.toml` model and provides
     methods to interact with the `tools.setuptools_git_versioning`
-    part and other entries related to it.
+    section and other entries related to it.
     """
 
     patcher: 'PyprojectPatcher'
